@@ -1,0 +1,4 @@
+.env
+.goplayrc
+Makefile
+Dockerfile

@@ -19,7 +19,7 @@ var (
 func init() {
 	log = logger.GetLogger()
 	backendClient = web.NewBackendClient()
-	backendUrl = env.Get("JCIO_MOVIEDB_BACKEND", "http://backend.moviedb.jamesclonk.io")
+	backendUrl = env.Get("JCIO_MOVIEDB_BACKEND", "http://moviedb-backend.jamesclonk.io")
 }
 
 func main() {
