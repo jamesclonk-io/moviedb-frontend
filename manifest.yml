@@ -1,0 +1,15 @@
+---
+applications:
+- name: moviedb-frontend
+  memory: 32M
+  disk_quota: 64M
+  instances: 1
+  buildpack: https://github.com/cloudfoundry/buildpack-go.git
+  host: moviedb
+  domains:
+  - jamesclonk.com
+  - jamesclonk.io
+  command: moviedb-frontend
+  path: .
+  env:
+    JCIO_ENV: production

@@ -1,0 +1,24 @@
+language: go
+
+go:
+  - 1.4
+
+env:
+  global:
+    - secure: "jYU44p7icLqP3cGjzW3MGka4hS7FLaZlESDJY6etgFyq8SDUlWIo6sxRr0wgpJ1pLFYiizgdVbZL2rRN3TMF8baoz/3NcFeyi4VPMGIjZJ0Mg3l/FyMl5xNPjzUnuhn6t/H5Z0maFtYGRktIkkge4JyPPY8+x4OxsOWkcs7owfXNTVAixtKxVTNFMWFDPEH9LRzY6AvCoTTxV1ikYpm8QvG0B29M6l3/UL0kPYu8ZxM9i65K4ijINi4ako/UKobicY/AnN1jRFSqNCoNswOpg8TFdD4BEIgJlzKyXseOcyDMX94fUEVaUnFJacXofftlCYhPhzdUyLHka/58NgCsXuT+CAf5sAGc6QzJAQsfpbpVvyiHLkJ783xN8U5FGcHE9ZzjuUJy5W7XGKZfZ7Ztydc9paaAB/CbkrKdKeXV/T6Vqu6Y267T9hlEGZ9v8wsmiDYVrCt1kdNlS6VAG22+6N9vHznnpLHOaSkJFnWiomNwA9h7lSj5AzStcYW01Kj3V8hIYlkIw148PqXFd9mHyXd31LM1GQVTyccFs6QEngBBVgCxFjwoV8GD6FnfsQDSqtnGnj1IvqWJ1kss1oCu/kVFlKxyTsCvP6dSkr0ru8FyVDyn4T130VH3JTGhrLLLtB9mjLn2RaY1xkUEkaIK4BfQ0RArzdwbfEixrF3axGQ="
+    - secure: "KnxD0E0+h0Qj+/97/QS/+WOrg0x4jCUOxY4oUWPbNguYhR6wUEveHgFoJTqMNo/0K6lKKcl4gbz1fVKYQmJeEi75jXP/6lqIAnRATVtvW/RVUypmhosmqiW5zJk0FzZqM/qioIFDGD4EVp/Myza7YIWRRc6oRiWGhEgxj34tYzWQgznNaZH6Ov6b7vLCGJz8BK7LZiDXgnHh3W4e8ZN1z8ylit7IqkeBar1Jms40FZgpwosGCCOxFow8m5gd/3t1V5T5lwhb3KYXmh2eNqTStZPwRrMu3oCzS0eRIgO8ggkekTuIk1oedFU7J8dDO4VqohgibDP1PPxku6zZB/pdAUK4jONsQz2UdecmfMlpfrTMR8HcQFiSEOJff2owNVvCGlB399NzaTUGuMMKhw6JUIGWUM8ffeRe5pFAFWJ26dwQLqR7DT7plxJcHyMmkQsXmLXnYQSKc+vSYePgbawFdbCfbTjxTksLKh/TMQIoGzxSgGg45LnvRmUIqIgbH+Wvaz3ZpO1CgQ9FiNysXpf/R12K3yngLBllQ8oyhYs8nT7IzuKF5Rd7y0q/HvzumZgMwoXV+uTQmzdUeeTnqYJloNjiwpsOey8Bqyqh1zRw05AE0zBrCH3L2q14MF4jr8C0yNc9EH9cdcrmvkkVz2GHVCetjb9eGnpOdt8I5kXInu8="
+
+script: go test -v ./...
+
+after_success:
+    - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
+    - "rm temp.deb"
+    - "cf api https://api.run.pivotal.io"
+    - "cf login --u $CF_USERNAME --p $CF_PASSWORD --o jamesclonk.io --s development"
+    - "cf push"
+    - "cf logout"
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
