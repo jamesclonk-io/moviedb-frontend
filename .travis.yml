@@ -5,18 +5,33 @@ go:
 
 env:
   global:
+    # pivotal user/pw
     - secure: "psgQo84YXKrhMg+S1PP8u0UnV1eDTMlsm8u7pgDYPOhcUZPTR3+JXLxpaGuYKleIWNKybf4eeNV3B+jHrtEDtSBhgr9Ht8+yCj2n3FYKwYMbof335O8N8msSl76Wg2ONnSW16vBH4p108alxdwMnXtD+gM6Qv2X9KP/tqepK+zAHkcuS/IMyXKrb/976yu1KQB7K0KcPO/HiSQxTl423wgibxunx54e8A7BtW4HqyU9i8h3cV4g8oZhl7LkdU2z7CnyGdyORU7FhXcdqFgLdPBeuHKSz5zs3LM2Cr3eBgA1pJe9/lpFtvpBt+H+dD2nNaPyEdHOWQabwt8nc+N3OQTFXSi/YyaVH47ZBv7p04fapNF/5XtYtql92TVo70Fa1gOfCp9pYCwHCqyhmYwIOHTrahm32qVZ/m37B0qO721k1k9PWIMnfQ4f1qugD2BRmuCSrZg3WDTKCg0CacI8YXlLZLbc7e6yhcNjL2NVTeBVkEyINVQBhqSKGOhmZwYQq8gxL7CXCwaLb5aK8ZzxoBXjaqb/3mcdsWQ0YASm3ELOyvXSCztImGrfq9pqH+RGXqKipVPnl40rh50jmC5iwD7/ufbLc2RYE2PsfCK7w2kBcok0IEYYyttoHDIde3eCaLv4fwV1yXiMR2RQ9chdcM3d+7fXNc85rRYa5LIpZnes="
     - secure: "I8FFNWtivBpitICU1aLAI2JY00T7gejMrxKFrS6bzXyC7DHsCaa+kQtw18J+ArwQaa4aTrBZh27vLZipS8XeroHAv3n/gb/cP5nuFTL/ER/aU7sLObXmyCc0pYKO3Bj5jiVWEalDPGKUxe0VS3IVT7qlZWbeu24jsFQxrEmfGX0lulJGBcFpo7DvfNV2OOnG9SIkzOwBU7ZGiKxiVI0gJGuJeKJzDXP39m2EdGsyISguhKvfHXmDPErifeoC9ez8n5IgvuqHZnN6tDSQE8h2H59+qPxXEo/Vk71Gy18zg60KxIjXjNeVWNQY4XL/DSbjSYFxz1GWPHdhgIJydvLE30mvpEAhiVEoQy174zqj9b2fv2ERn6SxpSLaTdinY1hRGg3eX8tkalX/mCg5ESOO4rFyzmfoZuTqDFv5/35E590djSVrWnxZHUy6o70upPOPmsXo2RRiWm2OJhrdCJ9/0h3zkCUzsNkYU8Z++E285JVtMhmggges2aM5uV9Esni/cnIlNKtOYJdq98Pun1hkzca4AFj+mM4Bnf2t5atmys52qmTvyppfqCOnxjRh2VwuGw2mj90bdIan60jKatGPJex5YzLwiBewlS33N4/glqst8Ejw1AkJZRvytXEeTp2Oqb62VlEXeDJtZVu/PqeLaDB50SeQV+l/xiWsJX+ek6k="
+    # ibm user/pw/org
+    - secure: "AtMYgHssl/AEqFi7bdvKA1D194voAwijqB+BliCf9MC9zEqSF+9g8OD0htXB3m/lmJkSva+bo7GtX16/NfdV1F7HietKEMuHFDcNmjNiPXnkIgiQVN4y1WSj4fywmsq7N6fijyrSe0SZDbzbljV5faIwUK4cGdBGQnial7BktPhvuJI3Rixo/Onx+xWDHbPZy0c+yKjxxdajDktuMvVqt2BK4uUP12PWMUCvO97cBhdzOWnD0mp47dbTMagEiQ1PMnnndxBsACgw4Bn9wh3RPnkJjPG5H4j0wal3dAs9P2v5xo+g7htEI2WJ3qQyaq51Qd0z2gMCqOTKPPoBS9QoRwBv+VDTAFGucMxZDulSRtqcS+zk1Wv8Xc0ZutU95O/wZqOge2oR80JDxSCEk4k0D+fmLPQCLr0B/bmgNz5IoIpvK1yondWqaSiCkdCatPF1KCkclbVvzREyQrnS1Il/t2wc4y3Bu9itcnkYyL/bqIywXe1OazVHtxtPFHoCtZDkxVTtJWSnovpGecWGOHw3BhldDUDgjKwZpSrsDU9Rb2NlT+RsAvR2fZsKCkcigBVE13oE8gC2E0NENCgh1d69zYysfvHmnpbGjCvF6sFdUlouZKZqrJ4GUc4xYRtALhOTOuWd7rDAaRvqE+UDd4PIRgbB7HqqkZ8dZu5ne8NWbB0="
+    - secure: "zNQqw7G8YtaOATvGwaIE6U9Fj7kzUx6PHfsMZqQj/e+8OZHFl0qfeyLl5qZ8c7L6d8+JNUvpe2RgACMRBL0fns2nyKRs3dCB4oteu4cCZEFIuFPkMbV/9eICgzJRhMZeCYdFgiio5f5oMHLcKS5uCH2ECGG1G11t3Fm5HHkaILNr/TU68dvWFGJj6c5gTKENgfkBQ5mfEJYN4HPHo4+QfdjdVPDfbXK3cr8RM2zs69r4EPlhX15aVo+9vciMiziwOmQM+SOtsNtm7XbLIUcIHnBNEMHPoY3sUY9U0ab+OfKyLPsghG3C2LONVBQvBS3ZrSW9tleVUflhFlk0kTjaOZbSwqtVC6wI5A7wN6QCda+v1qenv2pJByTnIRps4FRSO+KOl69dzZbnGTh3jnzqxa2FylC2DxsEIT+O/w2cw8gbtZ1ZBTxIR/Q2DRUWGyp6yiWkDvyqCqLJvp6x/w0fue9iwpdL160CJujcEXg6oFtmbfu7OsFoKcQllFxVEjuKLgXuvaXhgjIgYNn3AP6qmiZ3uDh247oMrbC+dh6J/mwFwpVck9JLVZ4c1qt1VrwXBLX8eTK/NqQRow7teb745R29+K6QXJy4k7oEQwE1xwMAaDJQoFDQvCoXOihvs70vXiUkANhwYrykQXZ3SJFSdnigaCjsvCGeRrZ5JEKQL8o="
+    - secure: "GgjEpWIrJ8IUZKTJiJjGCz8SW5DwYVvPuhBUollXwiX/2mE7z5u3fLOtXZPZirNVtQuTiEv0pYZHlo/riVof1oTL52PRox/0wouNnsOlqDP5IcMmWc5S5Sk8GFkxaodqd8pZEozJqOZlUDAYdBpkZw+2cTdCOx3g0lrchwVxd8ajIdLmriivf3Nt/IZ88fsTy9l4lfah7h/BLm5lueHMiDl5lsQuGteO1L2iXdmI0tEOuWjJKDmMB/jCUVp3JxVZEX8zShePgQnoNz4ohT+ykabMWUgZ94iyoysOaDYmJBJMAR0ks2RU5v+2k787j0kR44d0OAjD3+tXg86yorPynjqkQ3yQESqcHSH4sBAEIZn7+5IW3LI2T5MffD8Kf574xtzt7MjBvlQQpeDxp6qD9va7dVGY/9nAjkpSPB65oQZzvm2LELxCRfrdcl0G+nxw/BVg87wtbBmY4N2H7XlaIlHf1tAbxcEHYPFx10XemxUWkfEcpRmWjL7s5h1qic17LOhMBjJY0MqIHRewRbWhOx8k5QdIMjSsWaB1rSerAhYVCdulD9oDoeWo9LAFfSXaW3ovgnlje4fa3NVP6SRU+m999NRlw3jma4lcsFN4nw8MQDgOUQQBuR+JZ/2E6/D2cKJdGbBzZ3j116PAgEpUJMGxQkn7UPm0R9MpatItmjA="
 
 script: go test -v ./...
 
+## ibm
 after_success:
     - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
     - "rm temp.deb"
-    - "cf api https://api.run.pivotal.io"
-    - "cf login --u $CF_USERNAME --p $CF_PASSWORD --o jamesclonk.io --s development"
+    - "cf api https://api.eu-gb.bluemix.net"
+    - "cf login --u $BM_USERNAME --p $BM_PASSWORD --o $BM_ORGANIZATION --s dev"
     - "cf push"
     - "cf logout"
+
+## pivotal
+# after_success:
+#     - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
+#     - "rm temp.deb"
+#     - "cf api https://api.run.pivotal.io"
+#     - "cf login --u $CF_USERNAME --p $CF_PASSWORD --o jamesclonk.io --s development"
+#     - "cf push"
+#     - "cf logout"
 
 notifications:
   email:
