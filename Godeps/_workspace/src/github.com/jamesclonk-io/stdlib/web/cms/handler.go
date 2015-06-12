@@ -20,6 +20,15 @@ func (c *CMS) ViewHandler(w http.ResponseWriter, req *http.Request) *web.Page {
 		}
 	}
 
+	// return 404 if content was not found
+	if html == "" {
+		return &web.Page{
+			Title:      fmt.Sprintf("%s - %s - Not Found", c.Title, filename),
+			StatusCode: http.StatusNotFound,
+			Template:   "404",
+		}
+	}
+
 	// wrap into struct
 	content := struct {
 		Title string

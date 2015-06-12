@@ -25,15 +25,15 @@
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/env",
-			"Rev": "a031d9ff4d47c30a38a1259f413f08ea44d8a188"
+			"Rev": "2ce77acea59621f0f29b164cfad4dfd7d9d41fc4"
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/logger",
-			"Rev": "a031d9ff4d47c30a38a1259f413f08ea44d8a188"
+			"Rev": "2ce77acea59621f0f29b164cfad4dfd7d9d41fc4"
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/web",
-			"Rev": "a031d9ff4d47c30a38a1259f413f08ea44d8a188"
+			"Rev": "2ce77acea59621f0f29b164cfad4dfd7d9d41fc4"
 		},
 		{
 			"ImportPath": "github.com/phyber/negroni-gzip/gzip",
