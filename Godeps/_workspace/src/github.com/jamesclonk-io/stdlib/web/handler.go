@@ -75,6 +75,11 @@ func (b *Backend) NewHandler(fn Handler) http.HandlerFunc {
 				}
 			}
 		}
+
+		if page.Error != nil {
+			b.Render.JSON(w, page.StatusCode, page.Error.Error())
+			return
+		}
 		b.Render.JSON(w, page.StatusCode, page.Content)
 	}
 }
@@ -94,7 +99,7 @@ func (b *Backend) NotFoundHandler(headers http.Header) http.HandlerFunc {
 		return &Page{
 			Headers:    headers,
 			StatusCode: http.StatusNotFound,
-			Content:    nil,
+			Content:    map[string]string{"Code": "404", "Status": "This is not the JSON you are looking for.."},
 		}
 	})
 }
