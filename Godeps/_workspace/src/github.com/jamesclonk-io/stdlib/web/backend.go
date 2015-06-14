@@ -24,7 +24,7 @@ func NewBackend() *Backend {
 	}
 
 	b.Render = render.New(render.Options{
-		IndentJSON: true,
+		IndentJSON: false,
 	})
 	b.Router = NewRouter()
 	b.Router.NotFoundHandler = b.NotFoundHandler(nil)
