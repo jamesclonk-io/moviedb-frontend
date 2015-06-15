@@ -24,6 +24,14 @@
 			"Rev": "94903de8c98a68d8b4483c529b26a5d146e386a2"
 		},
 		{
+			"ImportPath": "github.com/jamesclonk-io/moviedb-backend/modules/database",
+			"Rev": "19cf7c9b7490e8a6d62915c803e70ff8df23fa78"
+		},
+		{
+			"ImportPath": "github.com/jamesclonk-io/moviedb-backend/modules/moviedb",
+			"Rev": "19cf7c9b7490e8a6d62915c803e70ff8df23fa78"
+		},
+		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/env",
 			"Rev": "7576272ba6763194635dfcba2b77a6260da3f1ed"
 		},
@@ -34,6 +42,15 @@
 		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/web",
 			"Rev": "7576272ba6763194635dfcba2b77a6260da3f1ed"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-51-ga8d8d01",
+			"Rev": "a8d8d01c4f91602f876bf5aa210274e8203a6b45"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Rev": "542ae647f8601bafd96233961b150cae198e0295"
 		},
 		{
 			"ImportPath": "github.com/phyber/negroni-gzip/gzip",
