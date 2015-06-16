@@ -71,9 +71,10 @@
               {{ end }}
             {{ end }}
           </ul>
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right" action="/movies">
             <div class="form-group">
-              <input type="text" placeholder="search..." class="form-control">
+              <input type="hidden" name="query" value="search">
+              <input type="text" placeholder="search..." class="form-control" name="value">
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
           </form>

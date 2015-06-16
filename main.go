@@ -38,20 +38,6 @@ func main() {
 	frontend.NewRoute("/movies", movies)
 
 	// TODO: refactor this into own func !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	genres, err := getGenres()
-	if err != nil {
-		log.Fatal(err)
-	}
-	var genreNav web.Navigation
-	for _, genre := range genres {
-		genreElement := web.NavigationElement{
-			Name: genre.Name,
-			Link: fmt.Sprintf("/movies?query=genre&value=%d", genre.Id),
-		}
-		genreNav = append(genreNav, genreElement)
-	}
-
-	// TODO: refactor this into own func !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	nav := web.Navigation{
 		web.NavigationElement{
 			Name: "Movies",
@@ -123,7 +109,7 @@ func main() {
 			Name:     "Genres",
 			Link:     "#",
 			Icon:     "fa-heartbeat",
-			Dropdown: genreNav,
+			Dropdown: getGenreNavigation(),
 		},
 		web.NavigationElement{
 			Name: "People",
@@ -153,6 +139,28 @@ func main() {
 
 	server := web.NewServer()
 	server.Start(n)
+}
+
+func getGenreNavigation() web.Navigation {
+	genres, err := getGenres()
+	if err != nil {
+		entry := log.WithFields(logrus.Fields{
+			"error": err,
+			"info":  "Could not get genres from backend",
+		})
+		entry.Error("Loading genres")
+		return nil
+	}
+
+	var nav web.Navigation
+	for _, genre := range genres {
+		element := web.NavigationElement{
+			Name: genre.Name,
+			Link: fmt.Sprintf("/movies?query=genre&value=%d", genre.Id),
+		}
+		nav = append(nav, element)
+	}
+	return nav
 }
 
 func getGenres() ([]moviedb.Genre, error) {
