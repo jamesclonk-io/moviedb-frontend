@@ -7,6 +7,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/jamesclonk-io/moviedb-backend/modules/moviedb"
+	"github.com/jamesclonk-io/moviedb-frontend/modules/navbar"
 	"github.com/jamesclonk-io/stdlib/env"
 	"github.com/jamesclonk-io/stdlib/logger"
 	"github.com/jamesclonk-io/stdlib/web"
@@ -34,105 +35,13 @@ type NavigationElement struct {
 
 func main() {
 	frontend := web.NewFrontend("jamesclonk.io - Movie Database")
-	frontend.NewRoute("/", index)
+	frontend.NewRoute("/", movies)
 	frontend.NewRoute("/movies", movies)
+	frontend.NewRoute("/actors", actors)
+	frontend.NewRoute("/directors", directors)
+	frontend.NewRoute("/statistics", statistics)
 
-	// TODO: refactor this into own func !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	nav := web.Navigation{
-		web.NavigationElement{
-			Name: "Movies",
-			Link: "#",
-			Icon: "fa-film",
-			Dropdown: web.Navigation{
-				web.NavigationElement{
-					Name: "by Name",
-					Link: "/movies/by_name",
-				},
-				web.NavigationElement{
-					Name: "by Score",
-					Link: "/movies/by_score",
-				},
-				web.NavigationElement{
-					Name: "by Rating",
-					Link: "/movies/by_rating",
-				},
-				web.NavigationElement{
-					Name: "by Year",
-					Link: "/movies/by_year",
-				},
-				web.NavigationElement{
-					Name: "Divider",
-					Link: "#",
-				},
-				web.NavigationElement{
-					Name: "✰✰✰✰✰",
-					Link: "/movies/by_5stars",
-				},
-				web.NavigationElement{
-					Name: "✰✰✰✰",
-					Link: "/movies/by_4stars",
-				},
-				web.NavigationElement{
-					Name: "✰✰✰",
-					Link: "/movies/by_3stars",
-				},
-				web.NavigationElement{
-					Name: "✰✰",
-					Link: "/movies/by_2stars",
-				},
-				web.NavigationElement{
-					Name: "✰",
-					Link: "/movies/by_1stars",
-				},
-			},
-		},
-		web.NavigationElement{
-			Name: "Titles",
-			Link: "#",
-			Icon: "fa-book",
-			Dropdown: web.Navigation{
-				web.NavigationElement{
-					Name: "0-9",
-					Link: "/movie_titles/by_num",
-				},
-				web.NavigationElement{
-					Name: "A",
-					Link: "/movie_titles/by_a",
-				},
-				web.NavigationElement{
-					Name: "B",
-					Link: "/movie_titles/by_b",
-				},
-			},
-		},
-		web.NavigationElement{
-			Name:     "Genres",
-			Link:     "#",
-			Icon:     "fa-heartbeat",
-			Dropdown: getGenreNavigation(),
-		},
-		web.NavigationElement{
-			Name: "People",
-			Link: "#",
-			Icon: "fa-users",
-			Dropdown: web.Navigation{
-				web.NavigationElement{
-					Name: "Actors",
-					Link: "/actors",
-				},
-				web.NavigationElement{
-					Name: "Directors",
-					Link: "/directors",
-				},
-			},
-		},
-		web.NavigationElement{
-			Name: "Statistics",
-			Link: "/statistics",
-			Icon: "fa-bar-chart",
-		},
-	}
-	frontend.SetNavigation(nav)
+	frontend.SetNavigation(navbar.GetNavigation())
 
 	n := negroni.Sbagliato()
 	n.UseHandler(frontend.Router)
@@ -141,64 +50,72 @@ func main() {
 	server.Start(n)
 }
 
-func getGenreNavigation() web.Navigation {
-	genres, err := getGenres()
-	if err != nil {
-		entry := log.WithFields(logrus.Fields{
-			"error": err,
-			"info":  "Could not get genres from backend",
-		})
-		entry.Error("Loading genres")
-		return nil
+func getData(f func(string, string) *web.Page, urlPart string, req *http.Request) *web.Page {
+	var query string
+	if len(req.URL.RawQuery) > 0 {
+		query = "?" + req.URL.RawQuery
 	}
+	query = fmt.Sprintf("%s%s", urlPart, query)
 
-	var nav web.Navigation
-	for _, genre := range genres {
-		element := web.NavigationElement{
-			Name: genre.Name,
-			Link: fmt.Sprintf("/movies?query=genre&value=%d", genre.Id),
-		}
-		nav = append(nav, element)
-	}
-	return nav
-}
-
-func getGenres() ([]moviedb.Genre, error) {
-	// TODO: refactor GET & UNMARSHAL into own func (withContext-style) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	response, err := backendClient.Get(backendUrl + "/genres")
-	if err != nil {
-		return nil, err
-	}
-
-	var genres []moviedb.Genre
-	if err := json.Unmarshal([]byte(response), &genres); err != nil {
-		return nil, err
-	}
-	return genres, nil
-}
-
-func index(w http.ResponseWriter, req *http.Request) *web.Page {
-	response, err := backendClient.Get(backendUrl + "/movies")
+	response, err := backendClient.Get(fmt.Sprintf("%s%s", backendUrl, query))
 	if err != nil {
 		return web.Error("Error!", http.StatusInternalServerError, err)
 	}
-
-	return &web.Page{
-		ActiveLink: "/",
-		Content:    response,
-		Template:   "index",
-	}
+	return f(response, query)
 }
 
 func movies(w http.ResponseWriter, req *http.Request) *web.Page {
-	response, err := backendClient.Get(backendUrl + "/movies?" + req.URL.RawQuery)
-	if err != nil {
-		return web.Error("Error!", http.StatusInternalServerError, err)
-	}
+	return getData(func(response, query string) *web.Page {
+		var data []moviedb.MovieListing
+		if err := json.Unmarshal([]byte(response), &data); err != nil {
+			return web.Error("Error!", http.StatusInternalServerError, err)
+		}
+		return &web.Page{
+			ActiveLink: query,
+			Content:    data,
+			Template:   "index",
+		}
+	}, "/movies", req)
+}
 
-	return &web.Page{
-		ActiveLink: "/",
-		Content:    response,
-		Template:   "index",
-	}
+func actors(w http.ResponseWriter, req *http.Request) *web.Page {
+	return getData(func(response, query string) *web.Page {
+		var data []moviedb.Person
+		if err := json.Unmarshal([]byte(response), &data); err != nil {
+			return web.Error("Error!", http.StatusInternalServerError, err)
+		}
+		return &web.Page{
+			ActiveLink: query,
+			Content:    data,
+			Template:   "people",
+		}
+	}, "/actors", req)
+}
+
+func directors(w http.ResponseWriter, req *http.Request) *web.Page {
+	return getData(func(response, query string) *web.Page {
+		var data []moviedb.Person
+		if err := json.Unmarshal([]byte(response), &data); err != nil {
+			return web.Error("Error!", http.StatusInternalServerError, err)
+		}
+		return &web.Page{
+			ActiveLink: query,
+			Content:    data,
+			Template:   "people",
+		}
+	}, "/directors", req)
+}
+
+func statistics(w http.ResponseWriter, req *http.Request) *web.Page {
+	return getData(func(response, query string) *web.Page {
+		var data moviedb.Statistics
+		if err := json.Unmarshal([]byte(response), &data); err != nil {
+			return web.Error("Error!", http.StatusInternalServerError, err)
+		}
+		return &web.Page{
+			ActiveLink: query,
+			Content:    data,
+			Template:   "statistics",
+		}
+	}, "/statistics", req)
 }

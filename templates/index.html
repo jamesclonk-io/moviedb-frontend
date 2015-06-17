@@ -1,1 +1,8 @@
-<div>{{ .Content }}</div>
+<div class="col-md-12">
+  <div class="list-group">
+    {{ range .Content }}
+      <a href="/movie/{{ .Id }}" class="list-group-item">({{ .Year }}) {{ .Score }} {{ .Title }}
+      </a>
+    {{ end }}
+  </div>
+</div>
