@@ -4,6 +4,7 @@ import (
 	j "encoding/json"
 	"html/template"
 	"net/http"
+	"strings"
 
 	"github.com/unrolled/render"
 )
@@ -26,6 +27,7 @@ func NewFrontend(title string) *Frontend {
 			"isOddNumber":  isOddNumber,
 			"html":         htmlize,
 			"json":         jsonize,
+			"repeat":       repeat,
 		}},
 	})
 	router := NewRouter()
@@ -61,4 +63,8 @@ func jsonize(input interface{}) template.JS {
 		return ""
 	}
 	return template.JS(bytes)
+}
+
+func repeat(input string, num int) string {
+	return strings.Repeat(input, num)
 }
