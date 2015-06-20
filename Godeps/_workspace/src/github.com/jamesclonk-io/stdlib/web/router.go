@@ -18,3 +18,7 @@ func (f *Frontend) NewRoute(path string, handler Handler) *mux.Route {
 func (b *Backend) NewRoute(path string, handler Handler) *mux.Route {
 	return b.Router.Handle(path, b.NewHandler(handler))
 }
+
+func (b *Backend) NewSecuredRoute(path string, handler Handler) *mux.Route {
+	return b.Router.Handle(path, b.NewSecuredHandler(handler))
+}

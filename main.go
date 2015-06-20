@@ -22,7 +22,6 @@ var (
 
 func init() {
 	log = logger.GetLogger()
-	backendClient = web.NewBackendClient()
 	backendUrl = env.Get("JCIO_MOVIEDB_BACKEND", "http://moviedb-backend.jamesclonk.io")
 }
 
@@ -34,20 +33,36 @@ type NavigationElement struct {
 }
 
 func main() {
+	// setup http handler
+	n := setup()
+
+	// start web server
+	server := web.NewServer()
+	server.Start(n)
+}
+
+func setup() *negroni.Negroni {
+	backendClient = web.NewBackendClient()
+
 	frontend := web.NewFrontend("jamesclonk.io - Movie Database")
+
+	// setup routes
 	frontend.NewRoute("/", movies)
 	frontend.NewRoute("/movies", movies)
+
 	frontend.NewRoute("/actors", actors)
 	frontend.NewRoute("/directors", directors)
 	frontend.NewRoute("/statistics", statistics)
 
+	frontend.NewRoute("/error/{.*}", createError)
+
+	// setup navbar
 	frontend.SetNavigation(navbar.GetNavigation())
 
 	n := negroni.Sbagliato()
 	n.UseHandler(frontend.Router)
 
-	server := web.NewServer()
-	server.Start(n)
+	return n
 }
 
 func getData(f func(string, string) *web.Page, urlPart string, req *http.Request) *web.Page {
@@ -118,4 +133,12 @@ func statistics(w http.ResponseWriter, req *http.Request) *web.Page {
 			Template:   "statistics",
 		}
 	}, "/statistics", req)
+}
+
+func createError(w http.ResponseWriter, req *http.Request) *web.Page {
+	return web.Error(
+		"jamesclonk.io - Movie Database - Error",
+		http.StatusInternalServerError,
+		fmt.Errorf("Error!"),
+	)
 }

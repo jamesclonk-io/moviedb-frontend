@@ -12,7 +12,7 @@
       <tr>
         <td style="width:5%"><a class="no-underline" href="/movies?query=year&value={{ .Year }}"><span class="label label-primary">{{ .Year }}</span></a></td>
         <td style="width:8%"><a class="no-underline score" href="/movies?query=score&value={{ .Score }}&sort=title&by=asc"><strong>{{ repeat "★" .Score }}</strong></a></td>
-        <td><a class="no-underline" href="/movie/{{ .Id }}">{{ .Title }}</a></td>
+        <td><a class="no-underline" href="/movie/{{ .Id }}">{{ html .Title }}</a></td>
       </tr>
       {{ end }}
     </tbody>

@@ -13,16 +13,12 @@ import (
 )
 
 var (
-	log           *logrus.Logger
-	backendClient *web.BackendClient
-	backendUrl    string
-	chars         = []rune("abcdefghijklmnopqrstuvwxyz")
+	log   *logrus.Logger
+	chars = []rune("abcdefghijklmnopqrstuvwxyz")
 )
 
 func init() {
 	log = logger.GetLogger()
-	backendClient = web.NewBackendClient()
-	backendUrl = env.Get("JCIO_MOVIEDB_BACKEND", "http://moviedb-backend.jamesclonk.io")
 }
 
 func GetNavigation() web.Navigation {
@@ -113,6 +109,9 @@ func GetNavigation() web.Navigation {
 }
 
 func getGenres() ([]moviedb.Genre, error) {
+	backendClient := web.NewBackendClient()
+	backendUrl := env.Get("JCIO_MOVIEDB_BACKEND", "http://moviedb-backend.jamesclonk.io")
+
 	response, err := backendClient.Get(backendUrl + "/genres")
 	if err != nil {
 		return nil, err

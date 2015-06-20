@@ -28,11 +28,11 @@ type MovieDB interface {
 }
 
 type movieDB struct {
-	*database.Adapter
+	*sql.DB
 }
 
 func NewMovieDB(adapter *database.Adapter) MovieDB {
-	return &movieDB{adapter}
+	return &movieDB{adapter.Database}
 }
 
 func (mdb *movieDB) GetLanguagesByMovie(id string) ([]*Language, error) {
@@ -276,11 +276,11 @@ func (mdb *movieDB) GetStatistics() (*Statistics, error) {
 			select 0 as actors, 0 as directors, count(*) as people from movie_people
 			union
 			select count(*) as actors, 0 as directors, 0 as people 
-				from (select distinct mp.id, mp.name from movie_people mp join movie_link_actor mla on (mla.person_id = mp.id))
+				from (select distinct mp.id, mp.name from movie_people mp join movie_link_actor mla on (mla.person_id = mp.id)) actors
 			union
 			select 0 as actors, count(*) as directors, 0 as people 
-				from (select distinct mp.id, mp.name from movie_people mp join movie_link_director mld on (mld.person_id = mp.id))
-		)`).Scan(&stats.Actors, &stats.Directors, &stats.People); err != nil {
+				from (select distinct mp.id, mp.name from movie_people mp join movie_link_director mld on (mld.person_id = mp.id)) directors
+		) final`).Scan(&stats.Actors, &stats.Directors, &stats.People); err != nil {
 		return nil, err
 	}
 

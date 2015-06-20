@@ -6,10 +6,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func NewPostgresAdapter(uri string) *Adapter {
+func newPostgresAdapter(uri string) *Adapter {
 	db, err := sql.Open("postgres", uri)
 	if err != nil {
 		panic(err)
 	}
-	return &Adapter{db}
+	return &Adapter{
+		Database: db,
+		URI:      uri,
+		Type:     "postgres",
+	}
 }

@@ -40,27 +40,6 @@ func (f *Frontend) NewHandler(fn Handler) http.HandlerFunc {
 
 func (b *Backend) NewHandler(fn Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		// do auth
-		if b.hmac {
-			// hmac check when using HMAC Backend
-			ok, err := b.hmacAuth(req)
-			if err != nil {
-				b.Render.JSON(w, http.StatusInternalServerError, fmt.Sprintf("Error: %v", err))
-				return
-			}
-			if !ok {
-				b.Render.JSON(w, http.StatusUnauthorized, "Unauthorized!")
-				return
-			}
-		} else {
-			// basic auth check when using TLS Backend
-			user, password, ok := req.BasicAuth()
-			if !ok || user != b.user || password != b.password {
-				b.Render.JSON(w, http.StatusUnauthorized, "Unauthorized!")
-				return
-			}
-		}
-
 		page := fn(w, req)
 
 		if page.StatusCode == 0 {
@@ -81,6 +60,33 @@ func (b *Backend) NewHandler(fn Handler) http.HandlerFunc {
 			return
 		}
 		b.Render.JSON(w, page.StatusCode, page.Content)
+	}
+}
+
+func (b *Backend) NewSecuredHandler(fn Handler) http.HandlerFunc {
+	f := b.NewHandler(fn)
+	return func(w http.ResponseWriter, req *http.Request) {
+		// do auth
+		if b.hmac {
+			// hmac check when using HMAC Backend
+			ok, err := b.hmacAuth(req)
+			if err != nil {
+				b.Render.JSON(w, http.StatusInternalServerError, fmt.Sprintf("Error: %v", err))
+				return
+			}
+			if !ok {
+				b.Render.JSON(w, http.StatusUnauthorized, "Unauthorized!")
+				return
+			}
+		} else {
+			// basic auth check when using TLS Backend
+			user, password, ok := req.BasicAuth()
+			if !ok || user != b.user || password != b.password {
+				b.Render.JSON(w, http.StatusUnauthorized, "Unauthorized!")
+				return
+			}
+		}
+		f(w, req)
 	}
 }
 
