@@ -49,6 +49,7 @@ func setup() *negroni.Negroni {
 	// setup routes
 	frontend.NewRoute("/", movies)
 	frontend.NewRoute("/movies", movies)
+	frontend.NewRoute("/movie/{id}", movie)
 
 	frontend.NewRoute("/actors", actors)
 	frontend.NewRoute("/directors", directors)
@@ -93,6 +94,20 @@ func movies(w http.ResponseWriter, req *http.Request) *web.Page {
 	}, "/movies", req)
 }
 
+func movie(w http.ResponseWriter, req *http.Request) *web.Page {
+	return getData(func(response, query string) *web.Page {
+		var data moviedb.Movie
+		if err := json.Unmarshal([]byte(response), &data); err != nil {
+			return web.Error("Error!", http.StatusInternalServerError, err)
+		}
+		return &web.Page{
+			Title:    fmt.Sprintf("jamesclonk.io - Movie Database - %s", data.Title),
+			Content:  data,
+			Template: "movie",
+		}
+	}, req.RequestURI, req)
+}
+
 func actors(w http.ResponseWriter, req *http.Request) *web.Page {
 	return getData(func(response, query string) *web.Page {
 		var data []moviedb.Person
@@ -128,6 +143,7 @@ func statistics(w http.ResponseWriter, req *http.Request) *web.Page {
 			return web.Error("Error!", http.StatusInternalServerError, err)
 		}
 		return &web.Page{
+			Title:      "jamesclonk.io - Movie Database - Statistics",
 			ActiveLink: query,
 			Content:    data,
 			Template:   "statistics",
