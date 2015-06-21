@@ -1,65 +1,65 @@
 {{ with .Content }}
-<div class="row">
-  <div class="col-md-12"><h2>{{ html .Title }}</h2></div>
-</div>
-{{ if .Alttitle.Valid }}
-<div class="row">
-  <div class="col-md-12"><h4>{{ html .Alttitle.String }}</h4></div>
-</div>
-{{ end }}
-<div class="row" style="margin-top: 10px;">
-  <div class="col-md-2 col-md-offset-1"><img src="/images/movies/{{ .Picture }}" alt="{{ .Title }}" class="img-responsive center-block"></div>
-  <div class="col-md-6 col-md-offset-1">
-    <table class="table table-super-condensed">
-      <tbody>
-        <tr>
-          <td style="width:20%">Score</td>
-          <td><a class="no-underline score" href="/movies?query=score&value={{ .Score }}&sort=title&by=asc"><strong>{{ repeat "★" .Score }}</strong></a></td>
-        </tr>
-        <tr>
-          <td style="width:20%">Genre</td>
-          <td>{{ range .Genres }}<a class="no-underline" href="/movies?query=genre&value={{ .Id }}&sort=title&by=asc">{{ .Name }}</a>, {{ end }}</td>
-        </tr>
-        <tr>
-          <td style="width:20%">Language</td>
-          <td>{{ range .Languages }}<a class="no-underline" href="/movies?query=language&value={{ .Id }}&sort=title&by=asc">{{ html .Name }}</a>, {{ end }}</td>
-        </tr>
-        <tr>
-          <td style="width:20%">Year</td>
-          <td><a class="no-underline" href="/movies?query=year&value={{ .Year }}&sort=title&by=asc"><span class="label label-default">{{ .Year }}</span></a></td>
-        </tr>
-        <tr><td style="width:20%">Runtime</td><td><a class="no-underline" href="/movies?query=length&value={{ .Length }}&sort=title&by=asc">{{ .Length }}</a> min.</td></tr>
-        <tr>
-          <td style="width:20%">Rating</td>
-          <td><a class="no-underline" href="/movies?query=rating&value={{ .Rating }}&sort=title&by=asc"><span class="label label-{{ if eq .Rating 6 }}success{{ else if eq .Rating 12 }}primary{{ else if eq .Rating 16 }}warning{{ else }}danger{{ end }}">{{ .Rating }}</span></a></td>
-        </tr>
-        <tr><td style="width:20%">Format</td><td><a class="no-underline" href="/movies?query=format&value={{ .Format }}&sort=title&by=asc">{{ .Format }}</a></td></tr>
-        <tr><td style="width:20%">Disks</td><td><a class="no-underline" href="/movies?query=disks&value={{ .Disks }}&sort=title&by=asc">{{ .Disks }}</a></td></tr>
-        <tr>
-          <td style="width:20%"><a class="no-underline" href="/movies?query=disk_type&value={{ .Type }}&sort=title&by=asc">{{ if eq .Type "BluRay" }}Region{{ else }}Code{{ end }}</a></td>
-          <td><a class="no-underline" href="/movies?query=disk_region&value={{ .Region }}&sort=title&by=asc">{{ .Region }}</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-condensed">
-      <tbody>
-        <tr>
-          <td style="width:10%">Actors</td>
-          <td>{{ range .Actors }}<a class="no-underline" href="/person/{{ .Id }}">{{ html .Name }}</a>, {{ end }}</td>
-        </tr>
-        <tr>
-          <td style="width:10%">Directors</td>
-          <td>{{ range .Directors }}<a class="no-underline" href="/person/{{ .Id }}">{{ html .Name }}</a>, {{ end }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">{{ html .Description }}</div>
+<div class="list-group">
+  <a href="#" class="list-group-item active">
+    <h3 class="list-group-item-heading">{{ html .Title }}</h3>
+    {{ if .Alttitle.Valid }}<p class="list-group-item-text">{{ html .Alttitle.String }}</p>{{ end }}
+  </a>
+  <a href="#" class="list-group-item no-hover">
+    <div class="row">
+      <div class="col-md-2 col-md-offset-1" style="margin-top: 10px; margin-bottom: 15px;"><img src="/images/movies/{{ .Picture }}" alt="{{ .Title }}" class="img-responsive center-block"></div>
+      <div class="col-md-6 col-md-offset-1" style="margin-top: 5px;">
+        <table class="table table-super-condensed">
+          <tbody>
+            <tr>
+              <td style="width:20%">Score</td>
+              <td><a class="no-underline score" href="/movies?query=score&value={{ .Score }}&sort=title&by=asc"><strong>{{ repeat "★" .Score }}</strong></a></td>
+            </tr>
+            <tr>
+              <td style="width:20%">Genre</td>
+              <td>{{ range .Genres }}<a class="no-underline" href="/movies?query=genre&value={{ .Id }}&sort=title&by=asc">{{ html .Name }}</a>, {{ end }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Language</td>
+              <td>{{ range .Languages }}<a class="no-underline" href="/movies?query=language&value={{ .Id }}&sort=title&by=asc">{{ html .Name }}</a>, {{ end }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Year</td>
+              <td><a class="no-underline" href="/movies?query=year&value={{ .Year }}&sort=title&by=asc"><span class="label label-default">{{ .Year }}</span></a></td>
+            </tr>
+            <tr><td style="width:20%">Runtime</td><td><a class="no-underline" href="/movies?query=length&value={{ .Length }}&sort=title&by=asc">{{ .Length }}</a> min.</td></tr>
+            <tr>
+              <td style="width:20%">Rating</td>
+              <td><a class="no-underline" href="/movies?query=rating&value={{ .Rating }}&sort=title&by=asc"><span class="label label-{{ if eq .Rating 6 }}success{{ else if eq .Rating 12 }}primary{{ else if eq .Rating 16 }}warning{{ else }}danger{{ end }}">{{ .Rating }}</span></a></td>
+            </tr>
+            <tr><td style="width:20%">Format</td><td><a class="no-underline" href="/movies?query=format&value={{ .Format }}&sort=title&by=asc">{{ .Format }}</a></td></tr>
+            <tr><td style="width:20%">Disks</td><td><a class="no-underline" href="/movies?query=disks&value={{ .Disks }}&sort=title&by=asc">{{ .Disks }}</a></td></tr>
+            <tr>
+              <td style="width:20%"><a class="no-underline" href="/movies?query=disk_type&value={{ .Type }}&sort=title&by=asc">{{ if eq .Type "BluRay" }}Region{{ else }}Code{{ end }}</a></td>
+              <td><a class="no-underline" href="/movies?query=disk_region&value={{ .Region }}&sort=title&by=asc">{{ .Region }}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              <td style="width:10%">Actors</td>
+              <td>{{ range .Actors }}<a class="no-underline" href="/person/{{ .Id }}">{{ html .Name }}</a>, {{ end }}</td>
+            </tr>
+            <tr>
+              <td style="width:10%">Directors</td>
+              <td>{{ range .Directors }}<a class="no-underline" href="/person/{{ .Id }}">{{ html .Name }}</a>, {{ end }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;">
+      <div class="col-md-12">{{ html .Description }}</div>
+    </div>
+  </a>
 </div>
 {{ end }}

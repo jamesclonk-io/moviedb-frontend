@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/gorilla/mux"
 	"github.com/jamesclonk-io/moviedb-backend/modules/moviedb"
 	"github.com/jamesclonk-io/moviedb-frontend/modules/navbar"
 	"github.com/jamesclonk-io/stdlib/env"
@@ -53,6 +54,8 @@ func setup() *negroni.Negroni {
 
 	frontend.NewRoute("/actors", actors)
 	frontend.NewRoute("/directors", directors)
+	frontend.NewRoute("/person/{id}", person)
+
 	frontend.NewRoute("/statistics", statistics)
 
 	frontend.NewRoute("/error/{.*}", createError)
@@ -149,6 +152,58 @@ func statistics(w http.ResponseWriter, req *http.Request) *web.Page {
 			Template:   "statistics",
 		}
 	}, "/statistics", req)
+}
+
+func person(w http.ResponseWriter, req *http.Request) *web.Page {
+	id := mux.Vars(req)["id"]
+
+	response, err := backendClient.Get(
+		fmt.Sprintf("%s/person/%s", backendUrl, id),
+	)
+	if err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+	var person moviedb.Person
+	if err := json.Unmarshal([]byte(response), &person); err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+
+	response, err = backendClient.Get(
+		fmt.Sprintf("%s/movies?query=actor&value=%s&sort=title&by=asc", backendUrl, id),
+	)
+	if err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+	var acting []moviedb.MovieListing
+	if err := json.Unmarshal([]byte(response), &acting); err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+
+	response, err = backendClient.Get(
+		fmt.Sprintf("%s/movies?query=director&value=%s&sort=title&by=asc", backendUrl, id),
+	)
+	if err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+	var directing []moviedb.MovieListing
+	if err := json.Unmarshal([]byte(response), &directing); err != nil {
+		return web.Error("Error!", http.StatusInternalServerError, err)
+	}
+
+	data := struct {
+		Person     moviedb.Person
+		ActorIn    []moviedb.MovieListing
+		DirectorOf []moviedb.MovieListing
+	}{
+		Person:     person,
+		ActorIn:    acting,
+		DirectorOf: directing,
+	}
+	return &web.Page{
+		Title:    fmt.Sprintf("jamesclonk.io - Movie Database - %s", person.Name),
+		Content:  data,
+		Template: "person",
+	}
 }
 
 func createError(w http.ResponseWriter, req *http.Request) *web.Page {

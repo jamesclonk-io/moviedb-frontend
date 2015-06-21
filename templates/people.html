@@ -1,1 +1,2 @@
-<div>{{ .Content }}</div>
+{{ range .Content }}
+<div class="col-md-3 col-sm-4"><a class="no-underline" href="/person/{{ .Id }}">{{ html .Name }}</a></div>{{ end }}
