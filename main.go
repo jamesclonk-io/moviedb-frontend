@@ -92,7 +92,7 @@ func movies(w http.ResponseWriter, req *http.Request) *web.Page {
 		return &web.Page{
 			ActiveLink: query,
 			Content:    data,
-			Template:   "index",
+			Template:   "movies",
 		}
 	}, "/movies", req)
 }

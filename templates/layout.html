@@ -88,7 +88,7 @@
 
     <img class="coa" src="/images/jamesclonk_coa.png" alt="JamesClonk's Coat of Arms">
 
-    <script src="/js/jquery.min.js"></script>
+    {{ if ne .ActiveLink "/statistics" }}<script src="/js/jquery.min.js"></script>{{ end }}
     <script src="/js/bootstrap.min.js"></script>
   </body>
 </html>

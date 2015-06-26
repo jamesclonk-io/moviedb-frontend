@@ -1,1 +1,401 @@
-<div>{{ .Content }}</div>
+{{ with .Content }}
+<script src="/js/jquery.min.js"></script>
+<script src="/js/underscore.min.js"></script>
+<script src="/js/highcharts.min.js"></script>
+
+<script type="text/javascript">
+$(function () {
+  Highcharts.setOptions({
+    chart: {
+      style: {
+          fontFamily: '"Source Sans Pro", sans-serif'
+      }
+    }
+  });
+
+  function personize(person) { return '<a href="/person/'+person.id+'" class="no-underline">'+person.name+'</a>'; }
+
+  var top5actors = eval("{{ json .TopActors }}"); 
+  $('#top5actors').highcharts({
+      chart: {
+          type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Top 5 Actors</h5>'
+      },
+      xAxis: {
+        categories: _.map(top5actors, personize),
+        labels: {
+          useHTML: true
+        }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#66aa66",
+        data: _.map(top5actors, function(person){ return person.count; })
+      }]
+  });
+
+  var top5directors = eval("{{ json .TopDirectors }}"); 
+  $('#top5directors').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Top 5 Directors</h5>'
+      },
+      xAxis: {
+        categories: _.map(top5directors, personize),
+        labels: {
+          useHTML: true
+        }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#6666cc",
+        data: _.map(top5directors, function(person){ return person.count; })
+      }]
+  });
+
+  var top5actorsanddirectors = eval("{{ json .TopActorsAndDirectors }}"); 
+  $('#top5actorsanddirectors').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Top 5 Actors and Directors</h5>'
+      },
+      xAxis: {
+        categories: _.map(top5actorsanddirectors, personize),
+        labels: {
+          useHTML: true
+        }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#cc4444",
+        data: _.map(top5actorsanddirectors, function(person){ return person.count; })
+      }]
+  });
+
+  var regions = eval("{{ json .Regions }}"); 
+  $('#regions').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Movie / Region</h5>'
+      },
+      xAxis: {
+        categories: _.map(regions, function(data){ return '<a href="/movies?query=disk_region&value='+data.type+'&sort=title&by=asc" class="no-underline">Region / Code: '+data.type+'</a>'; }),
+        labels: {
+          useHTML: true
+        }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        },
+        type: 'logarithmic',
+        minorTickInterval: 1,
+        tickInterval: 1
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold'
+            },
+            color: "#1a4162"
+          }
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#333333",
+        data: _.map(regions, function(data){ return data.count; })
+      }]
+  });
+
+  function starlink(score) {
+    var result = '<a href="/movies?query=score&value='+score+'&sort=title&by=asc" class="score no-underline">';
+    for(i = 0; i<score; i++) {
+      result = result + '★';
+    }
+    return result + '</a>';
+  }
+  var scores = eval("{{ json .Scores }}"); 
+  $('#scores').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Movie / Score</h5>'
+      },
+      xAxis: {
+        categories: _.map(scores, function(data){ 
+          return starlink(data.type); 
+        }),
+        labels: {
+          useHTML: true
+        }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        },
+        type: 'logarithmic',
+        minorTickInterval: 1,
+        tickInterval: 1
+      },
+      plotOptions: {
+        bar: {
+          enableMouseTracking: true,
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold'
+            },
+            color: "#1a4162"
+          }
+        }
+      },
+      tooltip: {
+        useHTML: true
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#ffcc00",
+        data: _.map(scores, function(data){ return data.count; })
+      }]
+  });
+
+  var ratings = eval("{{ json .Ratings }}"); 
+  $('#ratings').highcharts({
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        useHTML: true,
+        text: '<h5>Movie / Rating</h5>'
+      },
+      xAxis: {
+          categories: _.map(ratings, function(data){ 
+            var text = '<span class="label label-';
+            if (data.type > 16) {
+              text += 'danger'
+            } else if (data.type == 16) {
+              text += 'warning'
+            } else if (data.type == 12) {
+              text += 'primary'
+            } else {
+              text += 'success'
+            }
+            text += '">'+data.type+'</span>';
+            return '<a href="/movies?query=rating&value='+data.type+'&sort=title&by=asc" class="no-underline">'+text+'</a>'; 
+          }),
+          labels: {
+            useHTML: true
+          }
+      },
+      yAxis: {
+        allowDecimals: false,
+        title: {
+          enabled: false
+        },
+        type: 'logarithmic',
+        minorTickInterval: 1,
+        tickInterval: 1
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold'
+            },
+            color: "#1a4162"
+          }
+        }
+      },
+      tooltip: {
+        useHTML: true
+      },
+      credits: {
+        enabled: false
+      },
+      legend: {
+        enabled: false
+      },
+      series: [{
+        name: "Movies",
+        color: "#ff8833",
+        data: _.map(ratings, function(data){ return data.count; })
+      }]
+  });
+});
+</script>
+
+<div class="list-group">
+  <a href="#" class="list-group-item active">
+    <h3 class="list-group-item-heading">Statistics</h3>
+    <p class="list-group-item-text">{{ .Count }} @ {{ .LastUpdate }}</p>
+  </a>
+  <a href="#" class="list-group-item no-hover">
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-md-6">
+        <table class="table table-striped table-super-condensed">
+          <tbody>
+            <tr>
+              <td>Last update</td>
+              <td>{{ .LastUpdate }}</td>
+            </tr>
+            <tr>
+              <td># Movies</td>
+              <td><strong>{{ .Count }}</strong></td>
+            </tr>
+            <tr>
+              <td># Average Movies per day</td>
+              <td>{{ .AvgMoviesPerDay }}</td>
+            </tr>
+            <tr>
+              <td># Est. new Movies</td>
+              <td>{{ .NewMoviesEstimate }}</td>
+            </tr>
+            <tr>
+              <td># Total Length</td>
+              <td><strong>{{ .TotalLength }}</strong> min.</td>
+            </tr>
+            <tr>
+              <td># Average / Movie</td>
+              <td>{{ .AvgLengthPerMovie }} min.</td>
+            </tr>
+            <tr>
+              <td># Average / Disc</td>
+              <td>{{ .AvgLengthPerDisk }} min.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table class="table table-striped table-super-condensed">
+          <tbody>
+            <tr>
+              <td># DVD Movies</td>
+              <td><strong>{{ .DvdMovies }}</strong></td>
+            </tr>
+            <tr>
+              <td># BluRay Movies</td>
+              <td><strong>{{ .BlurayMovies }}</strong></td>
+            </tr>
+            <tr>
+              <td># DVD Discs</td>
+              <td>{{ .DvdDisks }}</td>
+            </tr>
+            <tr>
+              <td># BluRay Discs</td>
+              <td>{{ .BlurayDisks }}</td>
+            </tr>
+            <tr>
+              <td># Actors</td>
+              <td>{{ .Actors }}</td>
+            </tr>
+            <tr>
+              <td># Directors</td>
+              <td>{{ .Directors }}</td>
+            </tr>
+            <tr>
+              <td># Total People</td>
+              <td><strong>{{ .People }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div id="top5actors"></div>
+    </div>
+
+    <div class="row">
+      <div id="top5directors"></div>
+    </div>
+
+    <div class="row">
+      <div id="top5actorsanddirectors"></div>
+    </div>
+
+    <hr/>
+
+    <div class="row">
+      <div id="regions"></div>
+    </div>
+
+    <div class="row">
+      <div id="scores"></div>
+    </div>
+
+    <div class="row">
+      <div id="ratings"></div>
+    </div>
+  </a>
+</div>
+{{ end }}

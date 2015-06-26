@@ -91,21 +91,21 @@ func Test_Main_MovieSort(t *testing.T) {
 
 	body := response.Body.String()
 	assert.Contains(t, body, `<thead>
-      <tr>
-        <th>Year</th>
-        <th>Rating</th>
-        <th>Score</th>
-        <th>Title</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td style="width:5%"><a class="no-underline" href="/movies?query=year&value=1962"><span class="label label-default">1962</span></a></td>
-        <td style="width:4%"><a class="no-underline" href="/movies?query=rating&value=16"><span class="label label-warning">16</span></a></td>
-        <td style="width:5%"><a class="no-underline score" href="/movies?query=score&value=4&sort=title&by=asc"><strong>★★★★</strong></a></td>
-        <td><a class="no-underline" href="/movie/130">James Bond 007: Dr. No</a></td>
-      </tr>`)
+    <tr>
+      <th>Year</th>
+      <th>Rating</th>
+      <th>Score</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <td style="width:5%"><a class="no-underline" href="/movies?query=year&value=1962"><span class="label label-default">1962</span></a></td>
+      <td style="width:4%"><a class="no-underline" href="/movies?query=rating&value=16"><span class="label label-warning">16</span></a></td>
+      <td style="width:5%"><a class="no-underline score" href="/movies?query=score&value=4&sort=title&by=asc"><strong>★★★★</strong></a></td>
+      <td><a class="no-underline" href="/movie/130">James Bond 007: Dr. No</a></td>
+    </tr>`)
 }
 
 func Test_Main_OneStarMovies(t *testing.T) {
@@ -246,9 +246,11 @@ func Test_Main_Statistics(t *testing.T) {
 
 	body := response.Body.String()
 	assert.Contains(t, body, `<title>jamesclonk.io - Movie Database - Statistics</title>`)
-	// TODO: add more tests!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// TODO: add more tests!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// TODO: add more tests!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// TODO: add more tests!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// TODO: add more tests!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	assert.Contains(t, body, `<td># Average Movies per day</td>`)
+	assert.Contains(t, body, `<div id="top5actorsanddirectors"></div>`)
+	assert.Contains(t, body, `var result = '<a href="/movies?query=score&value='+score+'&sort=title&by=asc" class="score no-underline">';`)
+	assert.Contains(t, body, `\x22id\x22:396,\x22name\x22:\x22Clint Eastwood\x22`)
+	assert.Contains(t, body, `\x22id\x22:493,\x22name\x22:\x22Kenji Kamiyama\x22`)
+	assert.Contains(t, body, `\x22id\x22:483,\x22name\x22:\x22Bud Spencer\x22`)
+	assert.Contains(t, body, `\x22count\x22`)
 }

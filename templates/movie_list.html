@@ -1,0 +1,22 @@
+{{ define "movie_list" }}
+<table class="table table-striped table-hover table-condensed">
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Rating</th>
+      <th>Score</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range . }}
+    <tr>
+      <td style="width:5%"><a class="no-underline" href="/movies?query=year&value={{ .Year }}"><span class="label label-default">{{ .Year }}</span></a></td>
+      <td style="width:4%"><a class="no-underline" href="/movies?query=rating&value={{ .Rating }}"><span class="label label-{{ if eq .Rating 6 }}success{{ else if eq .Rating 12 }}primary{{ else if eq .Rating 16 }}warning{{ else }}danger{{ end }}">{{ .Rating }}</span></a></td>
+      <td style="width:5%"><a class="no-underline score" href="/movies?query=score&value={{ .Score }}&sort=title&by=asc"><strong>{{ repeat "★" .Score }}</strong></a></td>
+      <td><a class="no-underline" href="/movie/{{ .Id }}">{{ html .Title }}</a></td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
+{{ end }}
