@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Sirupsen/logrus"
+	"github.com/jamesclonk-io/moviedb-backend/modules/database"
 	"github.com/jamesclonk-io/stdlib/logger"
 	"github.com/mattes/migrate/migrate"
 )
@@ -16,8 +17,8 @@ func init() {
 	log = logger.GetLogger()
 }
 
-func RunMigrations(dbUri, dbType string) {
-	errors, ok := migrate.UpSync(dbUri, fmt.Sprintf("./migrations/%s", dbType))
+func RunMigrations(basePath string, adapter *database.Adapter) {
+	errors, ok := migrate.UpSync(adapter.URI, fmt.Sprintf("%s/%s", basePath, adapter.Type))
 	if !ok {
 		for _, err := range errors {
 			log.Error(err)

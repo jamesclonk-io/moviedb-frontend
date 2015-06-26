@@ -5,7 +5,6 @@ import (
 
 	"github.com/JamesClonk/vcap"
 	"github.com/Sirupsen/logrus"
-	"github.com/jamesclonk-io/moviedb-backend/modules/database/migration"
 	"github.com/jamesclonk-io/stdlib/env"
 	"github.com/jamesclonk-io/stdlib/logger"
 )
@@ -60,9 +59,6 @@ func NewAdapter() (db *Adapter) {
 	if db == nil {
 		log.Fatal("Could not set up database adapter")
 	}
-
-	// run db migrations
-	migration.RunMigrations(databaseUri, databaseType)
 
 	return db
 }
