@@ -29,11 +29,11 @@
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/moviedb-backend/modules/database",
-			"Rev": "f2b1653e61988b8df5b1d159b1bd9302c235bfc9"
+			"Rev": "3a41fa51ef8ff95aa5ad3c07a6235574d745d4c0"
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/moviedb-backend/modules/moviedb",
-			"Rev": "f2b1653e61988b8df5b1d159b1bd9302c235bfc9"
+			"Rev": "3a41fa51ef8ff95aa5ad3c07a6235574d745d4c0"
 		},
 		{
 			"ImportPath": "github.com/jamesclonk-io/stdlib/env",

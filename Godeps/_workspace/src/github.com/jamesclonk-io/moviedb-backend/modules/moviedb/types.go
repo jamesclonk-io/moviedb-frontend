@@ -21,15 +21,15 @@ type Statistics struct {
 	Regions               []*TypeCount       `json:"regions" xml:"regions"`
 	Scores                []*TypeCount       `json:"scores" xml:"scores"`
 	Ratings               []*TypeCount       `json:"ratings" xml:"ratings"`
-	AvgMoviesPerDay       float64
-	NewMoviesEstimate     float64
-	DvdMovies             int
-	BlurayMovies          int
-	DvdDisks              int
-	BlurayDisks           int
-	TotalLength           int
-	AvgLengthPerMovie     int
-	AvgLengthPerDisk      int
+	AvgMoviesPerDay       float64            `json:"avg_movies_per_day" xml:"avg_movies_per_day"`
+	NewMoviesEstimate     float64            `json:"new_movies_estimate" xml:"new_movies_estimate"`
+	DvdMovies             int                `json:"dvd_movies" xml:"dvd_movies"`
+	BlurayMovies          int                `json:"bluray_movies" xml:"bluray_movies"`
+	DvdDisks              int                `json:"dvd_disks" xml:"dvd_disks"`
+	BlurayDisks           int                `json:"bluray_disks" xml:"bluray_disks"`
+	TotalLength           int                `json:"total_length" xml:"total_length"`
+	AvgLengthPerMovie     int                `json:"avg_length_per_movie" xml:"avg_length_per_movie"`
+	AvgLengthPerDisk      int                `json:"avg_length_per_disk" xml:"avg_length_per_disk"`
 }
 
 type MovieType struct {
