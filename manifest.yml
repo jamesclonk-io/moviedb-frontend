@@ -2,7 +2,7 @@
 applications:
 - name: moviedb-frontend
   memory: 64M
-  disk_quota: 64M
+  disk_quota: 128M
   instances: 2
   #buildpack: https://github.com/cloudfoundry/buildpack-go.git
   hosts:
