@@ -21,7 +21,7 @@ script: go test -v ./...
 
 ## swisscom
 after_success:
-    - "wget https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.19.0&source=github-rel -qO cf-cli.tgz"
+    - "wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.19.0&source=github-rel' -qO cf-cli.tgz"
     - "tar -xvzf cf-cli.tgz"
     - "chmod +x cf"
     - "rm cf-cli.tgz"
