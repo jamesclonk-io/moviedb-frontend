@@ -21,12 +21,14 @@ script: go test -v ./...
 
 ## swisscom
 after_success:
-    - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
-    - "rm temp.deb"
-    - "cf api https://api.lyra-836.appcloud.swisscom.com"
-    - "cf login --u $APC_USERNAME --p $APC_PASSWORD --o $APC_ORGANIZATION --s PROD"
-    - "cf push"
-    - "cf logout"
+    - "wget https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.19.0&source=github-rel -qO cf-cli.tgz"
+    - "tar -xvzf cf-cli.tgz"
+    - "chmod +x cf"
+    - "rm cf-cli.tgz"
+    - "./cf api https://api.lyra-836.appcloud.swisscom.com"
+    - "./cf login --u $APC_USERNAME --p $APC_PASSWORD --o $APC_ORGANIZATION --s PROD"
+    - "./cf push"
+    - "./cf logout"
 
 ## ibm
 # after_success:
