@@ -21,7 +21,7 @@ script: go test -v ./...
 
 ## swisscom
 after_success:
-    - "wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.19.0&source=github-rel' -qO cf-cli.tgz"
+    - "wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.21.0&source=github-rel' -qO cf-cli.tgz"
     - "tar -xvzf cf-cli.tgz"
     - "chmod +x cf"
     - "rm cf-cli.tgz"
@@ -30,23 +30,16 @@ after_success:
     - "./cf push"
     - "./cf logout"
 
-## ibm
-# after_success:
-#     - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
-#     - "rm temp.deb"
-#     - "cf api https://api.eu-gb.bluemix.net"
-#     - "cf login --u $BM_USERNAME --p $BM_PASSWORD --o $BM_ORGANIZATION --s dev"
-#     - "cf push"
-#     - "cf logout"
-
 ## pivotal
 # after_success:
-#     - "wget http://go-cli.s3-website-us-east-1.amazonaws.com/releases/latest/cf-cli_amd64.deb -qO temp.deb && sudo dpkg -i temp.deb"
-#     - "rm temp.deb"
-#     - "cf api https://api.run.pivotal.io"
-#     - "cf login --u $CF_USERNAME --p $CF_PASSWORD --o jamesclonk.io --s development"
-#     - "cf push"
-#     - "cf logout"
+#     - "wget 'https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.21.0&source=github-rel' -qO cf-cli.tgz"
+#     - "tar -xvzf cf-cli.tgz"
+#     - "chmod +x cf"
+#     - "rm cf-cli.tgz"
+#     - "./cf api https://api.run.pivotal.io"
+#     - "./cf login --u $CF_USERNAME --p $CF_PASSWORD --o jamesclonk.io --s development"
+#     - "./cf push"
+#     - "./cf logout"
 
 notifications:
   email:
