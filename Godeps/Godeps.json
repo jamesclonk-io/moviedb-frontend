@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/jamesclonk-io/moviedb-frontend",
-	"GoVersion": "go1.5",
+	"GoVersion": "go1.10",
 	"Packages": [
 		"./..."
 	],
