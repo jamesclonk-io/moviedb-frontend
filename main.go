@@ -209,7 +209,9 @@ func person(w http.ResponseWriter, req *http.Request) *web.Page {
 
 func ready(w http.ResponseWriter, req *http.Request) *web.Page {
 	return &web.Page{
-		Content: `{}`,
+		Title:    "Ready",
+		Content:  `{}`,
+		Template: "ready",
 	}
 }
 
