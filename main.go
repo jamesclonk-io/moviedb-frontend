@@ -48,6 +48,7 @@ func setup() *negroni.Negroni {
 	frontend := web.NewFrontend("jamesclonk.io - Movie Database")
 
 	// setup routes
+	frontend.NewRoute("/ready", ready)
 	frontend.NewRoute("/", movies)
 	frontend.NewRoute("/movies", movies)
 	frontend.NewRoute("/movie/{id}", movie)
@@ -203,6 +204,12 @@ func person(w http.ResponseWriter, req *http.Request) *web.Page {
 		Title:    fmt.Sprintf("jamesclonk.io - Movie Database - %s", person.Name),
 		Content:  data,
 		Template: "person",
+	}
+}
+
+func ready(w http.ResponseWriter, req *http.Request) *web.Page {
+	return &web.Page{
+		Content: `{}`,
 	}
 }
 

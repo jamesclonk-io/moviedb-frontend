@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:20.04
 
 MAINTAINER JamesClonk
 
@@ -13,6 +13,5 @@ COPY templates /templates
 
 ENV JCIO_ENV production
 ENV PORT 3007
-ENV JCIO_MOVIEDB_BACKEND http://moviedb-backend.jamesclonk.io
 
 CMD ["/moviedb-frontend"]
